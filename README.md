@@ -17,10 +17,10 @@ I wasn't able to save all the datatypes I liked so why not extend it ;)
 
 save some data
 ```
-await prefs.dataStore("keyS", "value");
+await ExtendedPrefs().dataStore("keyS", "value");
 ```
 
 load some saved data
 ```
-await prefs.dataLoad("keyS", "String");
+await ExtendedPrefs().dataLoad("keyS", "String");
 ```
