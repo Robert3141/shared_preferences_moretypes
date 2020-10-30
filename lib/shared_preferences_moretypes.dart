@@ -13,11 +13,15 @@ class ExtendedPrefs {
     //print("store - key $key value $value");
 
     //set pref based on type
-    if (type == "String") await prefs.setString(key, value);
-    if (type == "int") await prefs.setInt(key, value);
-    if (type == "double") await prefs.setDouble(key, value);
-    if (type == "bool") await prefs.setBool(key, value);
-    if (type.substring(0, 4) == "List") {
+    if (type == "String")
+      await prefs.setString(key, value);
+    else if (type == "int")
+      await prefs.setInt(key, value);
+    else if (type == "double")
+      await prefs.setDouble(key, value);
+    else if (type == "bool")
+      await prefs.setBool(key, value);
+    else if (type.length > 4 ? type.substring(0, 4) == "List" : false) {
       if (value.length > 0) {
         type = value[0].runtimeType.toString();
         if (type == "String")
@@ -40,6 +44,8 @@ class ExtendedPrefs {
           await prefs.setInt(key, value.length);
         }
       }
+    } else {
+      throw ("Type not supported $type");
     }
   }
 
@@ -104,8 +110,8 @@ class ExtendedPrefs {
         }
         return data;
       } else
-        return null;
+        throw ("Type not supported $type");
     } else
-      return null;
+      throw ("Type not supported $type");
   }
 }
