@@ -49,9 +49,6 @@ class ExtendedPrefs {
     }
   }
 
-  /*Future<dynamic> dataLoad(String key, Type type) async =>
-      _dataLoadText(key, type.toString());*/
-
   Future<dynamic> dataLoad(String key, String type) async {
     //get share prefs
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -103,8 +100,6 @@ class ExtendedPrefs {
             type = "List<" + type.substring(i + 1);
           }
         }
-        //type = type.split("<")[1];
-        //type = type.substring(0, type.length - 1);
         for (int i = 0; i < length; i++) {
           data.add(await dataLoad("$key-$i", type));
         }
