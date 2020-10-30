@@ -26,18 +26,8 @@ class ExtendedPrefs {
         type = value[0].runtimeType.toString();
         if (type == "String")
           await prefs.setStringList(key, value);
-        else if (type == "double" || type == "int" || type == "bool") {
-          List<String> raw = List.empty(growable: true);
-          for (int i = 0; i < value.length; i++) {
-            raw.add(type == "bool"
-                ? value[i]
-                    ? "1"
-                    : "0"
-                : value[i].toString());
-          }
-          await prefs.setStringList(key, raw);
-        } else {
-          type = value[0][0].runtimeType.toString();
+        else {
+          //type = value[0][0].runtimeType.toString();
           for (int i = 0; i < value.length; i++) {
             await dataStore("$key-$i", value[i]);
           }
@@ -68,44 +58,24 @@ class ExtendedPrefs {
       type = type.substring(5, type.length - 1);
       if (type == "String")
         return prefs.getStringList(key);
-      else if (type == "double" || type == "int" || type == "bool") {
-        List<String> raw = prefs.getStringList(key);
-        if (type == "double") {
-          List<double> data = List.empty(growable: true);
-          for (int i = 0; i < raw.length; i++) {
-            data.add(double.parse(raw[i]));
-          }
-          return data;
-        }
-        if (type == "int") {
-          List<int> data = List.empty(growable: true);
-          for (int i = 0; i < raw.length; i++) {
-            data.add(int.parse(raw[i]));
-          }
-          return data;
-        }
-        if (type == "bool") {
-          List<bool> data = List.empty(growable: true);
-          for (int i = 0; i < raw.length; i++) {
-            data.add(raw[i] == "1");
-          }
-          return data;
-        }
-      } else if (type.split("<").length > 1) {
+      else {
         List<dynamic> data = List.empty(growable: true);
         int length = prefs.getInt(key);
-        //find next <
-        for (int i = 0; i < type.length - 1; i++) {
-          if (type[i] == "<") {
-            type = "List<" + type.substring(i + 1);
+        //list of list ?
+        if (type.split("<").length > 1) {
+          //find next <
+          for (int i = 0; i < type.length - 1; i++) {
+            if (type[i] == "<") {
+              type = "List<" + type.substring(i + 1);
+            }
           }
         }
+
         for (int i = 0; i < length; i++) {
           data.add(await dataLoad("$key-$i", type));
         }
         return data;
-      } else
-        throw ("Type not supported $type");
+      } //else throw ("Type not supported $type");
     } else
       throw ("Type not supported $type");
   }
