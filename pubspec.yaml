@@ -1,8 +1,7 @@
 name: shared_preferences_moretypes
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+description: extension of shared prefernces so more variables can be stored easily
+version: 1.0.0
+repository: https://github.com/Robert3141/shared_preferences_moretypes
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

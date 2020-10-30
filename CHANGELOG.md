@@ -1,3 +1,2 @@
-## [0.0.1] - TODO: Add release date.
+## [1.0.0] - Working with most common datatypes (and lists)
 
-* TODO: Describe initial release.
