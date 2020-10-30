@@ -6,4 +6,4 @@ Datatypes supported:
 - int
 - bool
 - double
-- Recursive Lists of the above (e.g List<double> List<double<double<double>>> e.t.c)
+- Recursive Lists of the above (e.g ```List<double>``` ```List<double<double<double>>>``` e.t.c)
