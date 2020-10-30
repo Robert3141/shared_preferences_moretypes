@@ -12,6 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # external packages
+  shared_preferences: ^0.5.12+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
