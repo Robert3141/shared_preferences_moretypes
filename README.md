@@ -12,6 +12,7 @@ I wasn't able to save all the datatypes I liked so why not extend it ;)
 - ```bool```
 - ```double```
 - Recursive Lists of the above (e.g ```List<double>``` ```List<double<double<double>>>``` e.t.c)
+- Recursive Maps of the above (e.g ```Map<String,String>``` ```Map<String,Map<int,String>>``` e.t.c)
 
 ## Usage
 
