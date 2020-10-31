@@ -44,7 +44,7 @@ void main() async {
       [43.4, 3242.4, 234.5],
       [434.3343434, 343434.333333, 444455.3333]
     ]);
-    expect(await prefs.dataLoad("keyLLD", "List<double<double>>"), [
+    expect(await prefs.dataLoad("keyLLD", "List<List<double>>"), [
       [3.0, 7.2, 56.4],
       [43.4, 3242.4, 234.5],
       [434.3343434, 343434.333333, 444455.3333]

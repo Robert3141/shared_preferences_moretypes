@@ -31,7 +31,7 @@ class ExtendedPrefs {
           for (int i = 0; i < value.length; i++) {
             await dataStore("$key-$i", value[i]);
           }
-          await prefs.setInt(key, value.length);
+          await prefs.setInt("$key+", value.length);
         }
       }
     } else {
@@ -60,16 +60,7 @@ class ExtendedPrefs {
         return prefs.getStringList(key);
       else {
         List<dynamic> data = List.empty(growable: true);
-        int length = prefs.getInt(key);
-        //list of list ?
-        if (type.split("<").length > 1) {
-          //find next <
-          for (int i = 0; i < type.length - 1; i++) {
-            if (type[i] == "<") {
-              type = "List<" + type.substring(i + 1);
-            }
-          }
-        }
+        int length = prefs.getInt("$key+");
 
         for (int i = 0; i < length; i++) {
           data.add(await dataLoad("$key-$i", type));
