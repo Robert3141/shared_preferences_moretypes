@@ -29,7 +29,7 @@ void main() async {
     [null]
   ];
 
-  var prefs = ExtendedPrefs();
+  var prefs = ExtendedPrefs(debug: true);
 
   // working values
   for (int i = 0; i < testValues.length; i++) {

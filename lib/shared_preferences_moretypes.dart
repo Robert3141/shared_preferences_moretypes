@@ -6,11 +6,14 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExtendedPrefs {
+  bool debug;
+  ExtendedPrefs({this.debug = false});
+
   Future dataStore(String key, dynamic value) async {
     //get shared prefs
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
-    print("store - key $key value $value");
+    if (debug) print("store - key $key value $value");
 
     //set pref based on type
     if (type == "String")
@@ -34,9 +37,10 @@ class ExtendedPrefs {
           await prefs.setInt("$key+", value.length);
         }
       }
-    } else if (type.length > 22
-        ? type.substring(0, 22) == "_InternalLinkedHashMap"
-        : false) {
+    } else if ((type.length > 22
+            ? type.substring(0, 22) == "_InternalLinkedHashMap"
+            : false) ||
+        (type.length > 13 ? type.substring(0, 13) == "_ImmutableMap" : false)) {
       int i = 0;
       for (var k in value.keys) {
         await dataStore("$key-key$i", k);
@@ -54,7 +58,7 @@ class ExtendedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     type = type.trim();
 
-    print("load - key $key type $type");
+    if (debug) print("load - key $key type $type");
 
     //set pref based on type
     if (type == "String")
@@ -74,18 +78,44 @@ class ExtendedPrefs {
         int length = prefs.getInt("$key+");
 
         for (int i = 0; i < length; i++) {
-          data.add(await dataLoad("$key-$i", type));
+          var result = await dataLoad("$key-$i", type);
+          if (i == 0) {
+            switch (type) {
+              case "String":
+                data = List<String>.empty(growable: true);
+                break;
+              case "int":
+                data = List<int>.empty(growable: true);
+                break;
+              case "double":
+                data = List<double>.empty(growable: true);
+                break;
+              case "bool":
+                data = List<bool>.empty(growable: true);
+                break;
+              case "List":
+                data = List<List>.empty(growable: true);
+                break;
+              case "Map":
+                data = List<Map>.empty(growable: true);
+                break;
+            }
+          }
+          data.add(result);
         }
         return data;
       }
-    } else if (type.length > 4
-        ? type.substring(0, 3) == "Map" || type.length > 23
+    } else if ((type.length > 4 ? type.substring(0, 3) == "Map" : false) ||
+        (type.length > 14 ? type.substring(0, 13) == "_ImmutableMap" : false) ||
+        (type.length > 23
             ? type.substring(0, 22) == "_InternalLinkedHashMap"
-            : false
-        : false) {
-      type = type.substring(0, 3) == "Map"
-          ? type.substring(4, type.length - 1)
-          : type.substring(23, type.length - 1);
+            : false)) {
+      if (type.substring(0, 3) == "Map")
+        type = type.substring(4, type.length - 1);
+      if (type.substring(0, 22) == "_InternalLinkedHashMap")
+        type = type.substring(23, type.length - 1);
+      if (type.substring(0, 13) == "_ImmutableMap")
+        type = type.substring(14, type.length - 1);
 
       Map<dynamic, dynamic> data = <dynamic, dynamic>{};
       int length = prefs.getInt("$key+");
