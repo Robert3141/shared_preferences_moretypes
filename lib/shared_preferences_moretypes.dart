@@ -14,12 +14,13 @@ class ExtendedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
     if (type.length >= 11) if (type.substring(0, 11) == "minified:v<")
-      type = type.substring(11, type.length - 1);
+      throw new ArgumentError.value(type, "type", "Minified not supported");
+    //type = type.substring(11, type.length - 1);
     if (debug) print("store - key $key value $value");
 
     //set pref based on type
     if (type == "String")
-      await prefs.setString(key, value);
+      await prefs.setString(key, value.toString());
     else if (type == "int")
       await prefs.setInt(key, value);
     else if (type == "double")
