@@ -4,3 +4,4 @@
 ## [2.0.0] - Add support for maps!
 ## [2.1.0] - Add debug option and make it return List<type> rather than List<dynamic>
 ## [2.2.0] - Add ignorance of minified type for web
+## [2.2.1] - Out by one

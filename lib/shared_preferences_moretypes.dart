@@ -14,7 +14,7 @@ class ExtendedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
     if (type.length >= 11) if (type.substring(0, 11) == "minified:v<")
-      type = type.substring(11, type.length - 2);
+      type = type.substring(11, type.length - 1);
     if (debug) print("store - key $key value $value");
 
     //set pref based on type
