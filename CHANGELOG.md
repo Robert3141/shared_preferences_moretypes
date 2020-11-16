@@ -6,3 +6,4 @@
 ## [2.2.0] - Add ignorance of minified type for web
 ## [2.2.1] - Out by one
 ## [2.2.2] - Minified not supported
+## [2.2.3] - minified not type

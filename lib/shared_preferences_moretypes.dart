@@ -14,7 +14,7 @@ class ExtendedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
     if (type.length >= 11) if (type.substring(0, 11) == "minified:v<")
-      throw new ArgumentError.value(type, "type", "Minified not supported");
+      throw new ArgumentError.value(type, "minified", "Minified not supported");
     //type = type.substring(11, type.length - 1);
     if (debug) print("store - key $key value $value");
 
