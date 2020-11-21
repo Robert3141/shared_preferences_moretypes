@@ -28,10 +28,54 @@ class ExtendedPrefs {
       if (data == null || data.length == 0) {
         return List.empty(growable: true);
       } else {
-        return List.generate(
-            data.length,
-            (index) =>
-                castData(data[index], type.substring(5, type.length - 1)));
+        if (type.length > 5) {
+          switch (type.substring(5, type.length - 1)) {
+            case "String":
+              return List<String>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "int":
+              return List<int>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "double":
+              return List<double>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "bool":
+              return List<bool>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "List<String>":
+              return List<List<String>>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "List<int>":
+              return List<List<int>>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "List<double>":
+              return List<List<double>>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+            case "List<bool>":
+              return List<List<bool>>.generate(
+                  data.length,
+                  (index) => castData(
+                      data[index], type.substring(5, type.length - 1)));
+          }
+          return List.generate(
+              data.length,
+              (index) =>
+                  castData(data[index], type.substring(5, type.length - 1)));
+        }
       }
     } else {
       if (debug) print("cast - not happened val $data type $type");
