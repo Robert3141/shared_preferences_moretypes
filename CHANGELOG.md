@@ -7,3 +7,4 @@
 ## [2.2.1] - Out by one
 ## [2.2.2] - Minified not supported
 ## [2.2.3] - minified not type
+## [2.3.0] - Finally understand minified. Minified data (on flutter web release) now supported and tested

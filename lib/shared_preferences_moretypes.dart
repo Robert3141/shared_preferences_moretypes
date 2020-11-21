@@ -9,14 +9,48 @@ class ExtendedPrefs {
   bool debug;
   ExtendedPrefs({this.debug = false});
 
+  dynamic castData(dynamic data, String type) {
+    switch (type) {
+      case "String":
+        return data.toString();
+      case "int":
+        return int.parse("$data");
+      case "double":
+        return double.parse("$data");
+      case "bool":
+        return data.toString() == "true"
+            ? true
+            : data.toString() == "false"
+                ? false
+                : null;
+    }
+    if (type.length > 4 ? type.substring(0, 4) == "List" : false) {
+      if (data == null || data.length == 0) {
+        return List.empty(growable: true);
+      } else {
+        return List.generate(
+            data.length,
+            (index) =>
+                castData(data[index], type.substring(5, type.length - 1)));
+      }
+    } else {
+      if (debug) print("cast - not happened val $data type $type");
+      return data;
+    }
+  }
+
   Future dataStore(String key, dynamic value) async {
     //get shared prefs
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
-    if (type.length >= 11) if (type.substring(0, 11) == "minified:v<")
-      throw new ArgumentError.value(type, "minified", "Minified not supported");
-    //type = type.substring(11, type.length - 1);
-    if (debug) print("store - key $key value $value");
+    String initialType = type;
+
+    //type minified
+    if (type.length > 11 ? type.substring(0, 8) == "minified" : false)
+      type = "List<${type.substring(11, type.length - 1)}>";
+
+    if (debug) print("store - key $key value type $type");
+    if (debug) print("store - value $value");
 
     //set pref based on type
     if (type == "String")
@@ -33,6 +67,13 @@ class ExtendedPrefs {
         if (type == "String")
           await prefs.setStringList(key, value);
         else {
+          //cast
+          if (initialType.length > 8
+              ? initialType.substring(0, 8) == "minified"
+              : false) {
+            value = List<dynamic>.from(value);
+          }
+
           //type = value[0][0].runtimeType.toString();
           for (int i = 0; i < value.length; i++) {
             await dataStore("$key-$i", value[i]);
@@ -57,8 +98,15 @@ class ExtendedPrefs {
   }
 
   Future<dynamic> dataLoad(String key, String type) async {
+    dynamic result = await _dataLoader(key, type);
+    if (debug) print("load - value $result");
+    return castData(result, type);
+  }
+
+  Future<dynamic> _dataLoader(String key, String type) async {
     //get share prefs
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String initialType = type.toString();
     type = type.trim();
 
     if (debug) print("load - key $key type $type");
@@ -106,7 +154,7 @@ class ExtendedPrefs {
           }
           data.add(result);
         }
-        return data;
+        return castData(data, initialType);
       }
     } else if ((type.length > 4 ? type.substring(0, 3) == "Map" : false) ||
         (type.length > 14 ? type.substring(0, 13) == "_ImmutableMap" : false) ||
