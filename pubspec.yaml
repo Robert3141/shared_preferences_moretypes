@@ -1,6 +1,6 @@
 name: shared_preferences_moretypes
 description: extension of shared prefernces so more variables can be stored easily
-version: 2.3.1
+version: 2.3.2
 repository: https://github.com/Robert3141/shared_preferences_moretypes
 
 environment:

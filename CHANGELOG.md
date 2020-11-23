@@ -9,3 +9,4 @@
 ## [2.2.3] - minified not type
 ## [2.3.0] - Finally understand minified. Minified data (on flutter web release) now supported and tested
 ## [2.3.1] - More casting done for datatypes on output
+## [2.3.2] - null data

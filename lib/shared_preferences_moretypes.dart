@@ -10,6 +10,7 @@ class ExtendedPrefs {
   ExtendedPrefs({this.debug = false});
 
   dynamic castData(dynamic data, String type) {
+    if (data == null) return null;
     switch (type) {
       case "String":
         return data.toString();
