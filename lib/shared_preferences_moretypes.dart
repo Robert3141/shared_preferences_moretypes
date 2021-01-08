@@ -84,11 +84,12 @@ class ExtendedPrefs {
     }
   }
 
-  Future dataStore(String key, dynamic value) async {
+  Future<bool> dataStore(String key, dynamic value) async {
     //get shared prefs
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String type = value.runtimeType.toString();
     String initialType = type;
+    bool saved = false;
 
     //type minified
     if (type.length > 11 ? type.substring(0, 8) == "minified" : false)
@@ -99,18 +100,18 @@ class ExtendedPrefs {
 
     //set pref based on type
     if (type == "String")
-      await prefs.setString(key, value.toString());
+      saved = await prefs.setString(key, value.toString());
     else if (type == "int")
-      await prefs.setInt(key, value);
+      saved = await prefs.setInt(key, value);
     else if (type == "double")
-      await prefs.setDouble(key, value);
+      saved = await prefs.setDouble(key, value);
     else if (type == "bool")
-      await prefs.setBool(key, value);
+      saved = await prefs.setBool(key, value);
     else if (type.length > 4 ? type.substring(0, 4) == "List" : false) {
       if (value.length >= 0) {
         type = value[0].runtimeType.toString();
         if (type == "String")
-          await prefs.setStringList(key, value);
+          saved = await prefs.setStringList(key, value);
         else {
           //cast
           if (initialType.length > 8
@@ -120,10 +121,11 @@ class ExtendedPrefs {
           }
 
           //type = value[0][0].runtimeType.toString();
+          saved = true;
           for (int i = 0; i < value.length; i++) {
-            await dataStore("$key-$i", value[i]);
+            saved &= await dataStore("$key-$i", value[i]);
           }
-          await prefs.setInt("$key+", value.length);
+          saved &= await prefs.setInt("$key+", value.length);
         }
       }
     } else if ((type.length > 22
@@ -131,15 +133,17 @@ class ExtendedPrefs {
             : false) ||
         (type.length > 13 ? type.substring(0, 13) == "_ImmutableMap" : false)) {
       int i = 0;
+      saved = true;
       for (var k in value.keys) {
-        await dataStore("$key-key$i", k);
-        await dataStore("$key-value$i", value[k]);
+        saved &= await dataStore("$key-key$i", k);
+        saved &= await dataStore("$key-value$i", value[k]);
         i++;
       }
-      await prefs.setInt("$key+", value.length);
+      saved &= await prefs.setInt("$key+", value.length);
     } else {
       throw new ArgumentError.value(type, "type", "Type not supported");
     }
+    return saved;
   }
 
   Future<dynamic> dataLoad(String key, String type) async {
