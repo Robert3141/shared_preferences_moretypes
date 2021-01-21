@@ -11,3 +11,4 @@
 ## [2.3.1] - More casting done for datatypes on output
 ## [2.3.2] - null data
 ## [2.4.0] - saving produces a boolean for whether it has saved properly
+## [2.4.1] - update dependencies
