@@ -26,7 +26,8 @@ void main() async {
   ];
   const List<dynamic> notSupportedValues = [
     null,
-    [null]
+    [null],
+    {null}
   ];
 
   var prefs = ExtendedPrefs(debug: true);
