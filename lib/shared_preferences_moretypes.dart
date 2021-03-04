@@ -32,42 +32,42 @@ class ExtendedPrefs {
         if (type.length > 5) {
           switch (type.substring(5, type.length - 1)) {
             case "String":
-              return List<String>.generate(
+              return List<String? /*!*/ >.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "int":
-              return List<int>.generate(
+              return List<int?>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "double":
-              return List<double>.generate(
+              return List<double?>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "bool":
-              return List<bool>.generate(
+              return List<bool?>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "List<String>":
-              return List<List<String>>.generate(
+              return List<List<String>?>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "List<int>":
-              return List<List<int>>.generate(
+              return List<List<int?>>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "List<double>":
-              return List<List<double>>.generate(
+              return List<List<double?>>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
             case "List<bool>":
-              return List<List<bool>>.generate(
+              return List<List<bool>?>.generate(
                   data.length,
                   (index) => castData(
                       data[index], type.substring(5, type.length - 1)));
@@ -175,29 +175,29 @@ class ExtendedPrefs {
         return prefs.getStringList(key);
       else {
         List<dynamic> data = List.empty(growable: true);
-        int length = prefs.getInt("$key+");
+        int length = prefs.getInt("$key+") ?? 0;
 
         for (int i = 0; i < length; i++) {
           var result = await dataLoad("$key-$i", type);
           if (i == 0) {
             switch (type) {
               case "String":
-                data = List<String>.empty(growable: true);
+                data = List<String?>.empty(growable: true);
                 break;
               case "int":
-                data = List<int>.empty(growable: true);
+                data = List<int?>.empty(growable: true);
                 break;
               case "double":
-                data = List<double>.empty(growable: true);
+                data = List<double?>.empty(growable: true);
                 break;
               case "bool":
-                data = List<bool>.empty(growable: true);
+                data = List<bool?>.empty(growable: true);
                 break;
               case "List":
-                data = List<List>.empty(growable: true);
+                data = List<List?>.empty(growable: true);
                 break;
               case "Map":
-                data = List<Map>.empty(growable: true);
+                data = List<Map?>.empty(growable: true);
                 break;
             }
           }
@@ -217,8 +217,8 @@ class ExtendedPrefs {
       if (type.substring(0, 13) == "_ImmutableMap")
         type = type.substring(14, type.length - 1);
 
-      Map<dynamic, dynamic> data = <dynamic, dynamic>{};
-      int length = prefs.getInt("$key+");
+      Map<dynamic, dynamic>? data = <dynamic, dynamic>{};
+      int length = prefs.getInt("$key+") ?? 0;
       List<String> types = type.split(",");
 
       for (int i = 0; i < length; i++) {

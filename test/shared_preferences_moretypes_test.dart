@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences_moretypes/shared_preferences_moretypes.dart';
 
 void main() async {
-  const List<dynamic> testValues = [
+  const List<dynamic>? testValues = [
     "value",
     3,
     true,
@@ -24,7 +24,7 @@ void main() async {
     {"firstK": "firstV", "secondK": "secondV"},
     {2: "helium", 10: "neon", 18: "argon"}
   ];
-  const List<dynamic> notSupportedValues = [
+  const List<dynamic>? notSupportedValues = [
     null,
     [null],
     {null}
@@ -56,4 +56,8 @@ void main() async {
       }
     });
   }
+  //test blank list
+  test("Test load empty List", () async {
+    expect(await prefs.dataLoad('blankList', 'List<bool>'), []);
+  });
 }

@@ -12,3 +12,4 @@
 ## [2.3.2] - null data
 ## [2.4.0] - saving produces a boolean for whether it has saved properly
 ## [2.4.1] - update dependencies
+## [3.0.0] - Eliminate issue with loading array that doesn't exist, support null safety
